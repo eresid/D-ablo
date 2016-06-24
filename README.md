@@ -2,7 +2,11 @@
 Clone Freeablo on D language (https://github.com/wheybags/freeablo)
 
 ##### Dependencies
-Only need SDL2, SDL2Mixer, SDL2Image and Dub
+- SDL2
+- SDL2Mixer
+- SDL2Image
+- DUB
+
 Without boost, python, cmake, libRocket, without Qt5, libbz2 and zlib
 
 ##### Rewrited (need test and review):
