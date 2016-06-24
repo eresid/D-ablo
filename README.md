@@ -1,6 +1,10 @@
 ### FreeabloD
 Clone Freeablo on D language (https://github.com/wheybags/freeablo)
 
+##### Dependencies
+Only need SDL2, SDL2Mixer, SDL2Image and Dub
+Without boost, python, cmake, libRocket, without Qt5, libbz2 and zlib
+
 ##### Rewrited (need test and review):
 - Main.d (main.cpp)
 - Settings.d (settings.cpp, settings.h)
@@ -14,6 +18,9 @@ Clone Freeablo on D language (https://github.com/wheybags/freeablo)
 - InputObserverInterface.d (inputobserverinterface.h)
 - ThreadManager.d (threadmanager.cpp, threadmanager.h)
 
-### License
-Original code under GPLv3
-My code under MIT
+##### Details
+http://www.diablo1.ru/game/
+https://www.youtube.com/watch?v=FgB5sjDPEV4
+
+##### License
+Original code under GPLv3, my code under MIT
