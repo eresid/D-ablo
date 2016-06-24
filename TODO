@@ -1,31 +1,15 @@
-[0.0.1]
-+ create repo on GitHub or BitBucket
-+ add license
-+ create dub project
-+ rewrite main.cpp
-+ add https://github.com/robik/DIni and fix # comments
-+ rewrite settings.cpp/settings.h
-+ rewrite position.cpp/position.h
-
 [0.0.2]
 + rewrite misc.cpp/misc.h
-- compile StormLib
++ rewrite md5.cpp/md5.h
+- rewrite mst.cpp/mst.h
 - rewrite faio.cpp/faio.h
+- compile StormLib
 - include library https://github.com/ladislav-zezula/StormLib
 
 [0.0.3]
-- first public release
-- add Makefile or CMake
-
-[0.0.4]
-- rewrite md5.cpp/md5.h
-
-[Details]
-http://www.diablo1.ru/game/
-https://www.youtube.com/watch?v=FgB5sjDPEV4
+- add i18n (http://dlanggamedev.blogspot.ru/2014/01/d.html)
+- migrate to dub 1.0
+- compile project with dub
 
 To compile:
 dmd Main.d components/Settings.d utils/IniParser.d -unittest
-
-Without boost, without python, without libRocket, without Qt5, without bzip2
-Only need SDL2, SDL2Mixer, SDL2Image and Cmake

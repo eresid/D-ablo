@@ -35,7 +35,7 @@ public class Renderer {
     }
 
     public static synchronized Renderer getInstance() {
-        if (mInstance == null) {
+        if (mInstance is null) {
             mInstance = new Renderer;
         }
 

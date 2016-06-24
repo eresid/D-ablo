@@ -1,0 +1,8 @@
+[0.0.1]
++ create repo on GitHub
++ add license
++ create dub project
++ add https://github.com/robik/DIni and fix # comments
++ rewrite main.cpp
++ rewrite settings.cpp/settings.h
++ rewrite position.cpp/position.h

@@ -19,7 +19,7 @@ public class ThreadManager {
     }
 
     public static synchronized ThreadManager getInstance() {
-        if (mInstance == null) {
+        if (mInstance is null) {
             mInstance = new ThreadManager;
         }
 

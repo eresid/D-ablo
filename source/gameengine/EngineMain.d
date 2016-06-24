@@ -21,6 +21,7 @@ public class EngineMain {
 //    private World mWorld;
 //    private DiabloExe mDiabloExe;
     private EngineInputManager mInputManager;
+    private Rand random;
 
     private bool mDone = false;
     private bool mPaused = false;
@@ -31,6 +32,10 @@ public class EngineMain {
 //    public EngineInputManager inputManager() {
 //        return mInputManager;
 //    }
+
+    public this() {
+        random = new Rand;
+    }
 
     public void run(Settings settings, string[string] variables) {
         int resolutionWidth = settings.getResolutionWidth();
@@ -57,8 +62,9 @@ public class EngineMain {
     }
 
     private void runGameLoop(Settings settings, string[string] variables, string pathExe) {
-        // TODO LevelGen::FAsrand(time(null));
         import std.conv;
+
+        random.srand(time(null));
 
         Player player;
         Renderer renderer = Renderer.getInstance();
