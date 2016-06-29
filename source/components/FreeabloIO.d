@@ -3,7 +3,7 @@ module components.FreeabloIO;
 import std.file;
 import core.sync.mutex;
 
-public class FreeabloIO {
+class FreeabloIO {
 
     private immutable string DIABDAT_MPQ = "DIABDAT.MPQ";
     private Mutex m;
