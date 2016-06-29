@@ -11,7 +11,7 @@ import utils.IniParser;
  *      settings.cpp (06.05.2016)
  *      settings.h (16.08.2015)
  */
-public class Settings {
+class Settings {
 
     private string mPath;
     private Ini mDefaultsPropertyTree;

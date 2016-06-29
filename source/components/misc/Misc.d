@@ -8,7 +8,7 @@ import std.math;
  *      misc.cpp (15.04.2014)
  *      misc.h (08.03.2015)
  */
-public class Misc {
+class Misc {
 
     alias Vector = Tuple!(float, "x", float, "y");
 

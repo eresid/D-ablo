@@ -1,9 +1,16 @@
 module components.FreeabloIO;
 
+import std.stdio;
 import std.file;
+
 import core.sync.mutex;
 
-public class FreeabloIO {
+/**
+ * original file:
+ *      faio.cpp (26.03.2016)
+ *      faio.h (26.03.2016)
+ */
+class FreeabloIO {
 
     private immutable string DIABDAT_MPQ = "DIABDAT.MPQ";
     private Mutex m;
@@ -44,7 +51,7 @@ public class FreeabloIO {
         }
     }
 
-    public bool exists(string filename) {
+    bool exists(string filename) {
         if (exists(filename)) {
             return true;
         }
@@ -55,7 +62,7 @@ public class FreeabloIO {
         }
     }
 
-    public FAFile FAfopen(string filename) {
+    FAFile fileOpen(string filename) {
         if (!exists(filename)) {
             synchronized (m) {
                 string stormPath = getStormLibPath(path);
@@ -93,11 +100,11 @@ public class FreeabloIO {
         }
     }
 
-    real FAfread(ref void * ptr, real size, real count, FAFile stream) {
+    real fileRead(ref void * ptr, real size, real count, FAFile stream) {
 
     }
 
-    int FAfclose(FAFile stream) {
+    int fileClose(FAFile stream) {
 
     }
 
@@ -125,43 +132,43 @@ public class FreeabloIO {
         return 0;
     }
 
-    public int read32(ref FAFile file) {
+    int read32(ref FAFile file) {
         int tmp;
-        FAfread(tmp, 4, 1, file);
+        fileRead(tmp, 4, 1, file);
         return tmp;
     }
 
-    public short read16(ref FAFile file) {
+    short read16(ref FAFile file) {
         short tmp;
-        FAfread(tmp, 2, 1, file);
+        fileRead(tmp, 2, 1, file);
         return tmp;
     }
 
-    public byte read8(ref FAFile file) {
+    byte read8(ref FAFile file) {
         byte tmp;
-        FAfread(tmp, 1, 1, file);
+        fileRead(tmp, 1, 1, file);
         return tmp;
     }
 
-    public string readCString(FAFile file, real ptr) {
+    string readCString(FAFile file, real ptr) {
         string retval = "";
 
         if (ptr) {
             FAfseek(file, ptr, SEEK_SET);
             char c = 0;
 
-            real bytesRead = FAfread(c, 1, 1, file);
+            real bytesRead = fileRead(c, 1, 1, file);
 
             while(c != '\0' && bytesRead) {
                 retval += c;
-                bytesRead = FAfread(c, 1, 1, file);
+                bytesRead = fileRead(c, 1, 1, file);
             }
         }
 
         return retval;
     }
 
-	public string readCStringFromWin32Binary(FAFile file, real ptr, real offset) {
+	string readCStringFromWin32Binary(FAFile file, real ptr, real offset) {
 	    if (ptr) {
 	        return readCString(file, ptr - offset);
 	    }
@@ -169,7 +176,7 @@ public class FreeabloIO {
         return "";
 	}
 
-//    public string getMPQFileName() {
+//    string getMPQFileName() {
 //        bfs::directory_iterator end;
 //        for(bfs::directory_iterator entry(".") ; entry != end; entry++)
 //        {
