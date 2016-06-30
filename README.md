@@ -1,6 +1,9 @@
 ### FreeabloD
 Modern reimplementation of the Diablo 1 game engine. Clone [Freeablo](https://github.com/wheybags/freeablo) on D language.
 
+##### Status
+Broken pre-alpha
+
 ##### Dependencies
 - SDL2
 - SDL2Mixer
