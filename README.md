@@ -27,4 +27,4 @@ http://www.diablo1.ru/game/
 https://www.youtube.com/watch?v=FgB5sjDPEV4
 
 ##### License
-Original code under GPLv3, my code under MIT
+Original code under GPLv3, my code under MIT, you can use my code in commercial projects without my claims, but better discass this with Freeablo authors
