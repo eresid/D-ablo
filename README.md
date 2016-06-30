@@ -14,6 +14,8 @@ Without boost, python, cmake, libRocket, without Qt5, libbz2 and zlib
 - Settings.d (settings.cpp, settings.h)
 - Position.d (position.cpp, position.h)
 - Misc.d (misc.cpp, misc.h)
+- Md5.d (md5.cpp/md5.h)
+- Mst.d (rewrite mst.cpp/mst.h)
 
 ##### In progress:
 - FreeabloIO.d (faio.cpp, faio.h)
