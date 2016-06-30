@@ -25,8 +25,8 @@ Without boost, python, cmake, libRocket, without Qt5, libbz2 and zlib
 - ThreadManager.d (threadmanager.cpp, threadmanager.h)
 
 ##### Details
-http://www.diablo1.ru/game/
-https://www.youtube.com/watch?v=FgB5sjDPEV4
+- http://www.diablo1.ru/game/
+- https://www.youtube.com/watch?v=FgB5sjDPEV4
 
 ##### License
 Original code under GPLv3, my code under MIT, you can use my code in commercial projects without my claims, but better discass this with Freeablo authors
