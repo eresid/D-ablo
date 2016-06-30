@@ -3,7 +3,7 @@ module gameengine.ThreadManager;
 import std.stdio;
 import std.datetime;
 
-import utils.Queue;
+import components.utils.Queue;
 import render.RenderState;
 
 class ThreadManager {

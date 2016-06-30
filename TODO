@@ -1,15 +1,19 @@
 [0.0.2]
 + rewrite misc.cpp/misc.h
 + rewrite md5.cpp/md5.h
-- rewrite mst.cpp/mst.h
++ rewrite mst.cpp/mst.h
+- rewrite stringops.h
 - rewrite faio.cpp/faio.h
+- application exe dump
 - compile StormLib
 - include library https://github.com/ladislav-zezula/StormLib
 
 [0.0.3]
-- add i18n (http://dlanggamedev.blogspot.ru/2014/01/d.html)
+- application font generator
 - migrate to dub 1.0
 - compile project with dub
 
-To compile:
-dmd Main.d components/Settings.d utils/IniParser.d -unittest
+[FUTURE]
+- application cel view
+- rewrite level gen module
+- add i18n (http://dlanggamedev.blogspot.ru/2014/01/d.html)

@@ -1,4 +1,4 @@
-module utils.Queue;
+module components.utils.Queue;
 
 // http://rosettacode.org/wiki/Queue/Usage#D
 class Queue(T) {

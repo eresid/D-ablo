@@ -1,4 +1,4 @@
-module freeablo.fontgenerator.app;
+module fontgenerator;
 
 import std.stdio;
 

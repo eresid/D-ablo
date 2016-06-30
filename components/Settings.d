@@ -4,7 +4,7 @@ import std.stdio;
 import std.file;
 import std.conv;
 
-import utils.IniParser;
+import components.utils.IniParser;
 
 /**
  * original file:

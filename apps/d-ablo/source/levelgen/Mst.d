@@ -27,7 +27,7 @@ class Mst {
     // (http://en.wikipedia.org/wiki/Prim%27s_algorithm).
     // Taken from http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
     void minimumSpanningTree(immutable uint[][] graph, ref uint[] parent) {
-        uint graphLength = graph[0].length;
+        ulong graphLength = graph[0].length;
 
         parent.length = graphLength;
 
@@ -35,10 +35,8 @@ class Mst {
         bool[] mstSet = new bool[graphLength];
 
         // Initialize all keys as INFINITE
-        // TODO maybe remove
         foreach (i; key) {
             key[i] = uint.max;
-            mstSet[i] = false;
         }
 
         // Always include first 1st vertex in MST.

@@ -1,4 +1,4 @@
-module utils.IniParser;
+module components.utils.IniParser;
 
 /**
  * This file is part of Dini library

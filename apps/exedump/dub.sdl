@@ -1,0 +1,5 @@
+name "exe_dump"
+description "Test application"
+authors "Yevhen Sakara"
+copyright "Copyright © 2016, Yevhen Sakara"
+license "MIT/GPL"

@@ -33,6 +33,11 @@ class FreeabloIO {
         FAFileMode mode;
     }
 
+    // StormLib needs paths with windows style \'s
+    string getStormLibPath(string path) {
+        return path.replace("/", "\\");
+    }
+
     bool init(string pathMPQ) {
         pathMPQ = pathMPQ is null ? DIABDAT_MPQ : pathMPQ;
 
@@ -51,18 +56,16 @@ class FreeabloIO {
         }
     }
 
-    bool exists(string filename) {
+    synchronized bool exists(string filename) {
         if (exists(filename)) {
             return true;
         }
 
-        synchronized (m) {
-            string stormPath = getStormLibPath(path);
-            return SFileHasFile(diabdat, stormPath);
-        }
+        string stormPath = getStormLibPath(path);
+        return SFileHasFile(diabdat, stormPath);
     }
 
-    FAFile fileOpen(string filename) {
+    static FAFile fileOpen(string filename) {
         if (!exists(filename)) {
             synchronized (m) {
                 string stormPath = getStormLibPath(path);
@@ -100,64 +103,119 @@ class FreeabloIO {
         }
     }
 
-    real fileRead(ref void * ptr, real size, real count, FAFile stream) {
-
-    }
-
-    int fileClose(FAFile stream) {
-
-    }
-
-    int FAfseek (FAFile stream, real offset, int origin) {
-
-    }
-
-    real FAftell(FAFile stream) {
-
-    }
-
-    real FAsize(FAFile stream) {
+    synchronized ulong fileRead(char[] ptr, ulong size, ulong count, FAFile stream) {
         switch(stream.mode) {
-            case FAFileMode.PlainFile: {
-                return getSize(stream.data.filename);
-            }
+            case FAFileMode.PlainFile:
+                return fread(ptr, size, count, stream.data.file);
 
             case FAFileMode.MPQFile: {
-                synchronized (m) {
-                    return SFileGetFileSize(stream.data.mpqFile, null);
+                DWORD dwBytes = 1;
+                if (!SFileReadFile(*stream.data.mpqFile, ptr, size * count, &dwBytes, null)) {
+                    int errorCode = GetLastError();
+
+                    // if the error code is ERROR_HANDLE_EOF, it's not really an error,
+                    // we just requested a read that goes over the end of the file.
+                    // The normal fread behaviour in this case is to truncate the read to fit within
+                    // the file, and return the actual number of bytes read, which we do,
+                    // so there is no need to print an error message.
+                    if (errorCode != ERROR_HANDLE_EOF) {
+                        writeln("Error reading from file, error code: %s", errorCode);
+                    }
                 }
+
+                return dwBytes;
             }
         }
 
         return 0;
     }
 
-    int read32(ref FAFile file) {
+    static synchronized int fileClose(FAFile stream) {
+        int retval = 0;
+
+        switch(stream.mode) {
+            case FAFileMode.PlainFile: {
+                delete stream.data.filename;
+                retval = fclose(stream.data.file);
+                break;
+            }
+
+            case FAFileMode.MPQFile: {
+                int res = SFileCloseFile(*stream.data.mpqFile);
+                free(stream.data.mpqFile);
+
+                if (res != 0) {
+                    retval = EOF;
+                }
+
+                break;
+            }
+        }
+
+        destroy(stream);
+
+        return retval;
+    }
+
+    int FAfseek (FAFile stream, ulong offset, int origin) {
+
+    }
+
+    synchronized ulong FAftell(FAFile stream) {
+        switch(stream.mode) {
+            case FAFileMode.PlainFile:
+                return ftell(stream.data.file);
+
+            case FAFileMode.MPQFile: {
+                return SFileSetFilePointer(*stream.data.mpqFile, 0, null, FILE_CURRENT);
+            }
+
+            default:
+                return 0;
+        }
+    }
+
+    static synchronized ulong fileSize(FAFile stream) {
+        switch(stream.mode) {
+            case FAFileMode.PlainFile: {
+                return getSize(stream.data.filename);
+            }
+
+            case FAFileMode.MPQFile: {
+                return SFileGetFileSize(stream.data.mpqFile, null);
+            }
+
+            default:
+                return 0;
+        }
+    }
+
+    static int read32(ref FAFile file) {
         int tmp;
         fileRead(tmp, 4, 1, file);
         return tmp;
     }
 
-    short read16(ref FAFile file) {
+    static short read16(ref FAFile file) {
         short tmp;
         fileRead(tmp, 2, 1, file);
         return tmp;
     }
 
-    byte read8(ref FAFile file) {
+    static byte read8(ref FAFile file) {
         byte tmp;
         fileRead(tmp, 1, 1, file);
         return tmp;
     }
 
-    string readCString(FAFile file, real ptr) {
+    string readCString(FAFile file, ulong ptr) {
         string retval = "";
 
         if (ptr) {
             FAfseek(file, ptr, SEEK_SET);
             char c = 0;
 
-            real bytesRead = fileRead(c, 1, 1, file);
+            ulong bytesRead = fileRead(c, 1, 1, file);
 
             while(c != '\0' && bytesRead) {
                 retval += c;
@@ -168,7 +226,7 @@ class FreeabloIO {
         return retval;
     }
 
-	string readCStringFromWin32Binary(FAFile file, real ptr, real offset) {
+	static string readCStringFromWin32Binary(FAFile file, ulong ptr, ulong offset) {
 	    if (ptr) {
 	        return readCString(file, ptr - offset);
 	    }
@@ -177,13 +235,11 @@ class FreeabloIO {
 	}
 
 //    string getMPQFileName() {
+//        File file = new File(".");
 //        bfs::directory_iterator end;
-//        for(bfs::directory_iterator entry(".") ; entry != end; entry++)
-//        {
-//            if (!bfs::is_directory(*entry))
-//            {
-//                if(boost::iequals(entry->path().leaf().generic_string(), DIABDAT_MPQ))
-//                {
+//        for (bfs::directory_iterator entry(".") ; entry != end; entry++) {
+//            if (!bfs::is_directory(*entry)) {
+//                if (boost::iequals(entry->path().leaf().generic_string(), DIABDAT_MPQ)) {
 //                    return entry->path().leaf().generic_string();
 //                }
 //            }
@@ -193,4 +249,9 @@ class FreeabloIO {
 //
 //        return "";
 //    }
+}
+
+unittest {
+    string path = "/home/user/Document/file.txt";
+    assert(getStormLibPath(path), "\\home\\user\\Document\\file.txt");
 }

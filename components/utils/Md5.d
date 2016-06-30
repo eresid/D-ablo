@@ -1,4 +1,4 @@
-module utils.Md5;
+module components.utils.Md5;
 
 import std.digest.md;
 import std.uni;

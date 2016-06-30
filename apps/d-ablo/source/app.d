@@ -1,4 +1,4 @@
-module freeablo;
+module main;
 
 /**
  * original file: 05.05.2016

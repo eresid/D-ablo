@@ -1,4 +1,4 @@
-module utils.Stack;
+module components.utils.Stack;
 
 import std.array;
 
