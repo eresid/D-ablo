@@ -10,7 +10,7 @@ import components.diabloexe.DiabloExe;
  * original file:
  *      exedump/main.cpp (22.08.2015)
  */
-void main(string[] args){
+void main(string[] args) {
     Settings settings = new Settings;
     if (!settings.loadUserSettings()) {
         writeln("Error: cannot load user settings");
