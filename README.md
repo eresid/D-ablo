@@ -27,6 +27,12 @@ Without boost, python, cmake, libRocket, without Qt5, libbz2 and zlib
 - InputObserverInterface.d (inputobserverinterface.h)
 - ThreadManager.d (threadmanager.cpp, threadmanager.h)
 
+#### ShtormLib
+To compile [StormLib](https://github.com/ladislav-zezula/StormLib) for Linux:
+```
+make -f Makefile.linux
+```
+
 ##### Details
 - http://www.diablo1.ru/game/
 - https://www.youtube.com/watch?v=FgB5sjDPEV4
