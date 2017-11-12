@@ -2,9 +2,9 @@ module fontgenerator;
 
 import std.stdio;
 
-import components.FreeabloIO;
-import components.cel.CelDecoder;
-import components.cel.CelFrame;
+import dcore.FreeabloIO;
+import dcore.cel.CelDecoder;
+import dcore.cel.CelFrame;
 
 /**
  * original file:

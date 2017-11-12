@@ -1,5 +1,6 @@
-name "freeablo"
+name "d_ablo"
 description "A minimal D application."
 authors "Yevhen Sakara"
 copyright "Copyright © 2016, YFreeablo Team"
 license "MIT"
+targetType "library"

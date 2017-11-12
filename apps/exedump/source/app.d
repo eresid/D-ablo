@@ -2,9 +2,9 @@ module exedump;
 
 import std.stdio;
 
-import components.Settings;
-import components.FreeabloIO;
-import components.diabloexe.DiabloExe;
+import dcore.Settings;
+import dcore.FreeabloIO;
+import dcore.diabloexe.DiabloExe;
 
 /**
  * original file:

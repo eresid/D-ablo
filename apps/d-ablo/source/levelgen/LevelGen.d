@@ -1,6 +1,6 @@
 module levelgen.LevelGen;
 
-import components.misc.Misc;
+import dcore.misc.Misc;
 
 /**
  * original file:

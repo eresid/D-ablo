@@ -1,0 +1,1 @@
+module dcore.diabloexe.CharacterStats;

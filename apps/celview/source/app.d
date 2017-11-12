@@ -2,13 +2,13 @@ module exedump;
 
 import std.stdio;
 
-import components.input.InputManager;
-import components.nuklearmisc.InputFwd;
-import components.nuklearmisc.StandaloneGuiSpriteHandler;
-import components.nuklearmisc.Widgets;
-import components.render.Render;
-import components.FreeabloIO;
-import components.Settings;
+import dcore.input.InputManager;
+import dcore.nuklearmisc.InputFwd;
+import dcore.nuklearmisc.StandaloneGuiSpriteHandler;
+import dcore.nuklearmisc.Widgets;
+import dcore.render.Render;
+import dcore.FreeabloIO;
+import dcore.Settings;
 //#include <chrono> http://www.cplusplus.com/reference/chrono/
 //#include <nfd.h> https://github.com/mlabbe/nativefiledialog
 

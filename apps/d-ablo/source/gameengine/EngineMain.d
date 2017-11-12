@@ -1,6 +1,6 @@
 module gameengine.EngineMain;
 
-import components.Settings;
+import dcore.Settings;
 
 import gameengine.InputObserverInterface;
 import gameengine.ThreadManager;
