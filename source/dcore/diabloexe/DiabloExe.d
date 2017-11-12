@@ -1,7 +1,7 @@
 module dcore.diabloexe.DiabloExe;
 
 import dcore.Settings;
-import dcore.FreeabloIO;
+import dcore.faio.FreeabloIO;
 import dcore.diabloexe.Affix;
 
 //#include "monster.h"
@@ -17,7 +17,7 @@ import dcore.diabloexe.Affix;
  *      diabloexe.h (29.08.2015)
  */
 class DiabloExe {
-
+/+
     private Monster[string] mMonsters;
     private Npc[string] mNpcs;
     private BaseItem[string] mBaseItems;
@@ -249,5 +249,5 @@ class DiabloExe {
                 mAffixes[tmp.mName] = tmp;
             }
         }
-    }
+    }+/
 }

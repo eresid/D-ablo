@@ -2,10 +2,10 @@ module dcore.nuklearmisc.Widgets;
 // https://github.com/vurtun/nuklear
 
 class Widgets {
-
+/+
     bool nk_file_pick(NkContext ctx, const string label, string path, const string filter, float rowHeight, float labelWidth = 120) {
         // TODO: replace nasty static buffer, we could use the more advanced api, but I'm not bothered right now
-        char buf[4096];
+        char[4096] buf;
 
         assert(path.size()+1 < 4096);
         memcpy(buf, path.c_str(), path.size()+1);
@@ -51,5 +51,5 @@ class Widgets {
 
         nk_style_pop_vec2(ctx);
         return retval;
-    }
+    }+/
 }

@@ -2,7 +2,7 @@ module dcore.faio.FreeabloFileObject;
 
 import std.stdio;
 
-import components.faio.FreeabloIO;
+import dcore.faio.FreeabloIO;
 
 // wrapper api for faio
 class FAFileObject {
@@ -11,8 +11,8 @@ class FAFileObject {
     private FreeabloIO faio;
 
     this(const string pathFile) {
-        faFile = FAfopen(pathFile);
         faio = new FreeabloIO;
+        faFile = faio.fileOpen(pathFile);
     }
 
     bool isValid() {

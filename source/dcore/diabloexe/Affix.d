@@ -1,6 +1,6 @@
 module dcore.diabloexe.Affix;
 
-import dcore.FreeabloIO;
+import dcore.faio.FreeabloIO;
 
 /**
  * Affix -- Part of a word or phrase can be before or after the object Prefix for before Suffix for afterwords.
@@ -26,12 +26,8 @@ struct Affix {
     uint mMinGold;
     uint mMaxGold;
     uint mMultiplier;
-
-    this() {
-
-    }
-
-    this(FreeabloIO.FAFile exe, uint codeOffset) {
+/+
+    this(FAFile exe, uint codeOffset) {
         uint nameTemp = FreeabloIO.read32(exe);
         mEffect = FreeabloIO.read32(exe);
         mMinEffect = FreeabloIO.read32(exe);
@@ -73,5 +69,5 @@ struct Affix {
         ~ "}" ~ newline;
 
         return result;
-    }
+    }+/
 }

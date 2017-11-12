@@ -1,5 +1,5 @@
 module dcore.nuklearmisc.InputFwd;
-
+/+
 import nukleard;
 
 import dcore.input.InputManager;
@@ -98,4 +98,4 @@ class InputFwd {
         memcpy(glyph, inp.c_str(), NK_UTF_SIZE);
         nk_input_glyph(ctx, glyph);
     }
-}
+}+/

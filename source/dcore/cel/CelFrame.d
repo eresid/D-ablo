@@ -1,5 +1,6 @@
 module dcore.cel.CelFrame;
 
+import dcore.cel.CelFile;
 import dcore.cel.Pal;
 
 /**

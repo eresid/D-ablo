@@ -12,7 +12,7 @@ import dcore.cel.Pal;
  *      celdecoder.h (06.06.2016)
  */
 class CelDecoder {
-
+/+
     alias FrameBytesRef = ubyte[];
     alias FrameDecoder = CelDecoder!(FrameBytesRef, Pal, Colour[]);
     // TODO typedef std::function<void(CelDecoder&, FrameBytesRef, const Pal, Colour[])> FrameDecoder;
@@ -31,18 +31,18 @@ class CelDecoder {
     private int mHeaderSize;
     private uint mAnimationLength;
     private static Settings mSettingsCel;
-    private static Settings mSettingsCl2;
+    private static Settings mSettingsCl2;+/
 
     this(string celPath) {
-        mCelPath = celPath;
-        mAnimationLength = 0;
+        //mCelPath = celPath;
+        //mAnimationLength = 0;
 
-        readCelName();
-        readConfiguration();
-        readPalette();
-        getFrames();
+        //readCelName();
+        //readConfiguration();
+        //readPalette();
+        //getFrames();
     }
-
+/+
     void decode() {
 
     }
@@ -247,4 +247,5 @@ class CelDecoder {
             mFrameWidth = 95;
         }
     }
+    +/
 }

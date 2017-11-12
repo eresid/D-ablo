@@ -1,8 +1,8 @@
 name "d_ablo"
 description "A minimal D application."
 authors "Yevhen Sakara"
-copyright "Copyright © 2016, YFreeablo Team"
+copyright "Copyright © 2016, Yevhen Sakara"
 license "MIT"
 targetType "library"
 
-dependency "stormlib" version="~>0.1.0"
+dependency "stormlib" version="~>0.1.1"

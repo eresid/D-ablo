@@ -3,3 +3,5 @@ description "Modern reimplementation of the Diablo 1 game engine."
 authors "Yevhen Sakara"
 copyright "Copyright © 2016, Yevhen Sakara"
 license "MIT"
+
+dependency "d_ablo" path="../../"

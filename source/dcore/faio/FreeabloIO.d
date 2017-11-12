@@ -1,9 +1,27 @@
 module dcore.faio.FreeabloIO;
 
-import std.stdio;
+import std.array;
 import std.file;
+import std.stdio;
 
 import stormlibd;
+
+enum FAFileMode {
+    PlainFile,
+    MPQFile
+}
+
+union FAFileUnion {
+    File file;
+    string filename;
+    HANDLE mpqFile; // This is a StormLib HANDLE type
+}
+
+// A FILE* like container for either a normal FILE*, or a StormLib HANDLE
+struct FAFile {
+    FAFileUnion data;
+    FAFileMode mode;
+}
 
 /**
  * The functions in this header are designed to behave roughly like the normal fopen, fread family.
@@ -20,35 +38,19 @@ class FreeabloIO {
 
     private HANDLE diabdat = null;
 
-    enum FAFileMode {
-        PlainFile,
-        MPQFile
-    }
-
-    union FAFileUnion {
-        File file;
-        string filename;
-        HANDLE mpqFile; // This is a StormLib HANDLE type
-    }
-
-    // A FILE* like container for either a normal FILE*, or a StormLib HANDLE
-    struct FAFile {
-        FAFileUnion data;
-        FAFileMode mode;
-    }
-
     // StormLib needs paths with windows style \'s
     string getStormLibPath(string path) {
-        return path.replace("/", "\\");
+        return replace(path, "/", "\\");
     }
 
     bool init(string pathMPQ) {
         pathMPQ = pathMPQ is null ? DIABDAT_MPQ : pathMPQ;
 
-        bool success = SFileOpenArchive(pathMPQ, 0, STREAM_FLAG_READ_ONLY, &diabdat);
+        bool success = SFileOpenArchive(cast(char*)pathMPQ, 0, STREAM_FLAG_READ_ONLY, &diabdat);
 
         if (!success) {
-            writeln("Failed to open %s with error %s", pathMPQ, GetLastError());
+            // GetLastError does not support on Linux
+            writefln("Failed to open %s with error %s", pathMPQ, ""/*GetLastError()*/);
         }
 
         return success;
@@ -60,38 +62,36 @@ class FreeabloIO {
         }
     }
 
-    synchronized bool exists(string filename) {
-        if (exists(filename)) {
+    bool exists(string filename) {
+        if (std.file.exists(filename)) {
             return true;
         }
 
-        string stormPath = getStormLibPath(path);
-        return SFileHasFile(diabdat, stormPath);
+        string stormPath = getStormLibPath(filename);
+        return SFileHasFile(diabdat, cast(char*)stormPath);
     }
 
-    static FAFile fileOpen(string filename) {
-        if (!exists(filename)) {
-            synchronized (m) {
-                string stormPath = getStormLibPath(path);
+    FAFile fileOpen(string filename) {
+        if (!std.file.exists(filename)) {
+            string stormPath = getStormLibPath(filename);
 
-                if (!SFileHasFile(diabdat, stormPath)) {
-                    writeln("File " ~ path ~ " not found");
-                    return null;
-                }
-
-                FAFile file = new FAFile();
-                file.data.mpqFile = malloc(sizeof(HANDLE));
-
-                if (!SFileOpenFileEx(diabdat, stormPath, 0, file.data.mpqFile)) {
-                    writeln("Failed to open %s in %s", filename, DIABDAT_MPQ);
-                    delete file;
-                    return null;
-                }
-
-                file.mode = FAFileMode.MPQFile;
-
-                return file;
+            if (!SFileHasFile(diabdat, stormPath)) {
+                writeln("File " ~ path ~ " not found");
+                return null;
             }
+
+            FAFile file = new FAFile();
+            file.data.mpqFile = malloc(sizeof(HANDLE));
+
+            if (!SFileOpenFileEx(diabdat, stormPath, 0, file.data.mpqFile)) {
+                writeln("Failed to open %s in %s", filename, DIABDAT_MPQ);
+                delete file;
+                return null;
+            }
+
+            file.mode = FAFileMode.MPQFile;
+
+            return file;
         } else {
             File plainFile = new File(filename, "r");
             if (!exist(plainFile)) {
@@ -107,7 +107,7 @@ class FreeabloIO {
         }
     }
 
-    synchronized ulong fileRead(char[] ptr, ulong size, ulong count, FAFile stream) {
+    ulong fileRead(char[] ptr, ulong size, ulong count, FAFile stream) {
         switch(stream.mode) {
             case FAFileMode.PlainFile:
                 return fread(ptr, size, count, stream.data.file);
@@ -134,7 +134,7 @@ class FreeabloIO {
         return 0;
     }
 
-    static synchronized int fileClose(FAFile stream) {
+    int fileClose(FAFile stream) {
         int retval = 0;
 
         switch(stream.mode) {
@@ -165,7 +165,7 @@ class FreeabloIO {
 
     }
 
-    synchronized ulong FAftell(FAFile stream) {
+    ulong FAftell(FAFile stream) {
         switch(stream.mode) {
             case FAFileMode.PlainFile:
                 return ftell(stream.data.file);
@@ -179,7 +179,7 @@ class FreeabloIO {
         }
     }
 
-    static synchronized ulong fileSize(FAFile stream) {
+    ulong fileSize(FAFile stream) {
         switch(stream.mode) {
             case FAFileMode.PlainFile: {
                 return getSize(stream.data.filename);
@@ -230,7 +230,7 @@ class FreeabloIO {
         return retval;
     }
 
-	static string readCStringFromWin32Binary(FAFile file, ulong ptr, ulong offset) {
+	string readCStringFromWin32Binary(FAFile file, ulong ptr, ulong offset) {
 	    if (ptr) {
 	        return readCString(file, ptr - offset);
 	    }
