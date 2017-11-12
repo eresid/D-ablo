@@ -1,4 +1,4 @@
-module components.FreeabloIO;
+module components.faio.FreeabloIO;
 
 import std.stdio;
 import std.file;
@@ -6,6 +6,10 @@ import std.file;
 import core.sync.mutex;
 
 /**
+ * The functions in this header are designed to behave roughly like the normal fopen, fread family.
+ * The difference is, if FAfopen is called on a file that doesn't exist, it will try to use StormLib
+ * to open it in the MPQ file DIABDAT.MPQ.
+ *
  * original file:
  *      faio.cpp (26.03.2016)
  *      faio.h (26.03.2016)
@@ -27,7 +31,7 @@ class FreeabloIO {
         HANDLE mpqFile; // This is a StormLib HANDLE type
     }
 
-   // A FILE* like container for either a normal FILE*, or a StormLib HANDLE
+    // A FILE* like container for either a normal FILE*, or a StormLib HANDLE
     struct FAFile {
         FAFileUnion data;
         FAFileMode mode;
