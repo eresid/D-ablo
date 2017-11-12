@@ -3,6 +3,8 @@ module dcore.faio.FreeabloIO;
 import std.stdio;
 import std.file;
 
+import stormlibd;
+
 /**
  * The functions in this header are designed to behave roughly like the normal fopen, fread family.
  * The difference is, if FAfopen is called on a file that doesn't exist, it will try to use StormLib
