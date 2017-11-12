@@ -18,7 +18,7 @@ union FAFileUnion {
 }
 
 // A FILE* like container for either a normal FILE*, or a StormLib HANDLE
-struct FAFile {
+class FAFile {
     FAFileUnion data;
     FAFileMode mode;
 }
@@ -72,18 +72,20 @@ class FreeabloIO {
     }
 
     FAFile fileOpen(string filename) {
+        import core.stdc.stdlib;
+
         if (!std.file.exists(filename)) {
             string stormPath = getStormLibPath(filename);
 
-            if (!SFileHasFile(diabdat, stormPath)) {
-                writeln("File " ~ path ~ " not found");
+            if (!SFileHasFile(diabdat, cast(char*)stormPath)) {
+                writeln("File " ~ filename ~ " not found");
                 return null;
             }
 
-            FAFile file = new FAFile();
+            FAFile file = FAFile();
             file.data.mpqFile = malloc(sizeof(HANDLE));
 
-            if (!SFileOpenFileEx(diabdat, stormPath, 0, file.data.mpqFile)) {
+            if (!SFileOpenFileEx(diabdat, cast(char*)stormPath, 0, file.data.mpqFile)) {
                 writeln("Failed to open %s in %s", filename, DIABDAT_MPQ);
                 delete file;
                 return null;
@@ -93,12 +95,12 @@ class FreeabloIO {
 
             return file;
         } else {
-            File plainFile = new File(filename, "r");
-            if (!exist(plainFile)) {
+            File plainFile = File(filename, "r");
+            if (!plainFile.exists()) {
                 return null;
             }
 
-            FAFile file = new FAFile();
+            FAFile file = FAFile();
             file.mode = FAFileMode.PlainFile;
             file.data.file = plainFile;
             file.data.filename = filename;
@@ -107,7 +109,7 @@ class FreeabloIO {
         }
     }
 
-    ulong fileRead(char[] ptr, ulong size, ulong count, FAFile stream) {
+    ulong fileRead(void* ptr, ulong size, ulong count, FAFile stream) {
         switch(stream.mode) {
             case FAFileMode.PlainFile:
                 return fread(ptr, size, count, stream.data.file);
@@ -194,21 +196,21 @@ class FreeabloIO {
         }
     }
 
-    static int read32(ref FAFile file) {
-        int tmp;
-        fileRead(tmp, 4, 1, file);
+    int read32(ref FAFile file) {
+        uint tmp;
+        fileRead(&tmp, 4, 1, file);
         return tmp;
     }
 
-    static short read16(ref FAFile file) {
-        short tmp;
-        fileRead(tmp, 2, 1, file);
+    short read16(ref FAFile file) {
+        ushort tmp;
+        fileRead(&tmp, 2, 1, file);
         return tmp;
     }
 
-    static byte read8(ref FAFile file) {
-        byte tmp;
-        fileRead(tmp, 1, 1, file);
+    byte read8(ref FAFile file) {
+        ubyte tmp;
+        fileRead(&tmp, 1, 1, file);
         return tmp;
     }
 
@@ -219,11 +221,11 @@ class FreeabloIO {
             FAfseek(file, ptr, SEEK_SET);
             char c = 0;
 
-            ulong bytesRead = fileRead(c, 1, 1, file);
+            ulong bytesRead = fileRead(&c, 1, 1, file);
 
             while(c != '\0' && bytesRead) {
                 retval += c;
-                bytesRead = fileRead(c, 1, 1, file);
+                bytesRead = fileRead(&c, 1, 1, file);
             }
         }
 
@@ -238,21 +240,13 @@ class FreeabloIO {
         return "";
 	}
 
-//    string getMPQFileName() {
-//        File file = new File(".");
-//        bfs::directory_iterator end;
-//        for (bfs::directory_iterator entry(".") ; entry != end; entry++) {
-//            if (!bfs::is_directory(*entry)) {
-//                if (boost::iequals(entry->path().leaf().generic_string(), DIABDAT_MPQ)) {
-//                    return entry->path().leaf().generic_string();
-//                }
-//            }
-//        }
-//
-//        writeln("Failed to find %s in current directory", DIABDAT_MPQ);
-//
-//        return "";
-//    }
+    string getMPQFileName() {
+        // TODO
+
+        writefln("Failed to find %s in current directory", DIABDAT_MPQ);
+
+        return "";
+    }
 }
 
 unittest {

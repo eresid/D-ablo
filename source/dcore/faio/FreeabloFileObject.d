@@ -16,7 +16,7 @@ class FAFileObject {
     }
 
     bool isValid() {
-        return faFile != null;
+        return faFile !is null;
     }
 
     bool exists(const string filename) {
@@ -28,7 +28,7 @@ class FAFileObject {
             writeln("FAFileWrapper::FAfread: faFile is NULL.");
             return 0;
         }
-        return faio.FAfread(ptr, size, count, faFile);
+        return faio.fileRead(ptr, size, count, faFile);
     }
 
     int FAfseek(size_t offset, int origin) {
@@ -52,7 +52,7 @@ class FAFileObject {
             writeln("FAFileWrapper::FAsize: faFile is NULL.");
             return 0;
         }
-        return faio.FAsize(faFile);
+        return faio.fileSize(faFile);
     }
 
     uint read32() {
@@ -96,11 +96,11 @@ class FAFileObject {
     }
 
 
-    static string getMPQFileName() {
+    string getMPQFileName() {
         return faio.getMPQFileName();
     }
 
-    static void quit() {
+    void quit() {
         faio.quit();
     }
 }

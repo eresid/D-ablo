@@ -9,24 +9,24 @@ public class LevelObjects {
 
     struct LevelObject {
         bool valid;
-        real spriteCacheIndex;
-        real spriteFrame;
+        long spriteCacheIndex;
+        long spriteFrame;
         int x2;
         int y2;
         int dist;
     }
 
     private LevelObject[] mData;
-    private real mWidth;
-    private real mHeight;
+    private long mWidth;
+    private long mHeight;
 
-    public void resize(real x, real y) {
-        mData.resize(x * y);
+    public void resize(long x, long y) {
+        mData.length = x * y;
         mWidth = x;
         mHeight = y;
     }
 
-    private LevelObject get(real x, real y, LevelObjects objects) {
+    private LevelObject get(long x, long y, LevelObjects objects) {
         return objects.mData[x + y * objects.mWidth];
     }
 
