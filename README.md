@@ -4,7 +4,7 @@ Modern reimplementation of the Diablo 1 game engine. Clone [Freeablo](https://gi
 ### Other implementations
 
 - [DGEngine](https://github.com/dgengin/DGEngine)
-- [Devilution](https://github.com/galaxyhaxz/devilution)
+- [Devilution](https://github.com/diasurgical/devilution)
 
 ##### Status
 Broken pre-alpha
